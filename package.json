@@ -1,0 +1,19 @@
+{
+  "name": "md2anki",
+  "version": "1.0.0",
+  "description": "A markdown to anki-deck converter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "anki"
+  ],
+  "author": "Yannis Becker",
+  "license": "MIT",
+  "dependencies": {
+    "anki-apkg-export": "^4.0.3",
+    "fs-extra": "^10.0.0",
+    "markdown-it": "^12.0.6"
+  }
+}
