@@ -48,7 +48,7 @@ const outputPath = options.output;
 	// some stats
 	console.log(`found ${cards.length} cards!`);
 	// create new anki-deck
-	const apkg = new AnkiDeck(options.deckName || options.input, {css: ''});
+	const apkg = new AnkiDeck(options.deckName || 'md2anki', {css: ''});
 	// add cards to deck (convert tokens to html)
 	console.log(`converting cards to anki deck!`);
 	cards.forEach(card => apkg.addCard(md.renderer.render(card.front, md.options, {}), md.renderer.render(card.back, md.options, {})));
