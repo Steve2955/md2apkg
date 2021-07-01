@@ -3,8 +3,9 @@ const { program } = require('commander');
 program.version(require('./package.json').version);
 
 program
-	.option('-o, --output <path>', 'apkg file path', './output.apkg')
 	.option('-i, --input <path>', 'markdown file path')
+	.option('-o, --output <path>', 'apkg file path', './output.apkg')
+	.option('-n, --deck-name <name>', 'name of the deck')
 	.option('-e, --include-empty', 'include empty cards in the deck')
 	.parse(process.argv);
 
@@ -44,10 +45,10 @@ const outputPath = options.output;
 	if(!options.includeEmpty) cards = cards.filter(card => card.back.length);
 	// remove ignored cards
 	cards = cards.filter(card => !card.back.some(token => token.content.trim().includes('<!-- md2anki ignore-card -->'.trim())));
-	// stats
+	// some stats
 	console.log(`found ${cards.length} cards!`);
 	// create new anki-deck
-	const apkg = new AnkiDeck('test.md');
+	const apkg = new AnkiDeck(options.deckName || options.input, {css: ''});
 	// add cards to deck (convert tokens to html)
 	console.log(`converting cards to anki deck!`);
 	cards.forEach(card => apkg.addCard(md.renderer.render(card.front, md.options, {}), md.renderer.render(card.back, md.options, {})));
