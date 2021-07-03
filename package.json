@@ -4,7 +4,7 @@
   "description": "A markdown to anki-deck converter",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node index.js --input README.md --deck-name TestDeck"
   },
   "keywords": [
     "anki"
