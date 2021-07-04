@@ -75,6 +75,7 @@ export function deckFromCards(cards, images, options) {
 	// create new deck
 	const apkg = new AnkiDeck(options.deckName, { css: '' });
 	console.log(`deck initialized!`);
+	// add media files to deck
 	images.forEach(image => {
 		apkg.addMedia(image, fs.readFileSync(image));
 	});
