@@ -4,8 +4,11 @@
 	"description": "A markdown to anki-deck converter",
 	"main": "index.js",
 	"type": "module",
+	"engines": {
+		"node": ">=13.2.0"
+	},
 	"scripts": {
-		"test": "node index.js --input README.md --deck-name TestDeck"
+		"test": "mocha"
 	},
 	"keywords": [
 		"anki"
@@ -18,5 +21,9 @@
 		"fs-extra": "^10.0.0",
 		"markdown-it": "^12.0.6",
 		"markdown-it-inline-comments": "^1.0.1"
+	},
+	"devDependencies": {
+		"chai": "^4.3.4",
+		"mocha": "^9.0.2"
 	}
 }
