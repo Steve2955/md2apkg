@@ -9,6 +9,8 @@ const md = mdit().use(mdcomment);
 import AnkiDeckExport from 'anki-apkg-export';
 const AnkiDeck = AnkiDeckExport.default;
 
+import Card from './Card.js';
+
 export default async function (inputPath, outputPath, options) {
 	// check if input file exists
 	if (!(await fs.pathExists(inputPath))) {
@@ -39,7 +41,7 @@ export function tokensFromMarkdown(markdown) {
 export function cardsFromTokens(tokens) {
 	// parse tokens into individual cards
 	let cards = [];
-	let card = { front: [], back: [] };
+	let card = new Card();
 	let isFront = true;
 	tokens.forEach((token, i) => {
 		// new heading starts or end of token-array reached
@@ -47,7 +49,7 @@ export function cardsFromTokens(tokens) {
 			cards.push(card);
 			// reset variables
 			isFront = true;
-			card = { front: [], back: [] };
+			card = new Card();
 		}
 		// push token to front/back
 		card[isFront ? 'front' : 'back'].push(token);
@@ -61,7 +63,9 @@ export function filterCards(cards, options) {
 	// remove empty cards
 	if (!options.includeEmpty) cards = cards.filter(card => card.back.length);
 	// remove ignored cards
-	return cards.filter(card => !card.back.some(token => token.content.trim().includes('<!-- md2anki ignore-card -->'.trim())));
+	cards = cards.filter(card => !card.back.some(token => token.content.trim().includes('<!-- md2anki ignore-card -->'.trim())));
+	// remove cards from unwanted heading levels
+	return cards.filter(card => !(options.ignoreLevels || []).includes(card.headingLevel));
 }
 
 export function deckFromCards(cards, options) {

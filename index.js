@@ -9,7 +9,7 @@ program
 	.addOption(new Option('-i, --input <path>', 'markdown file path').default('./README.md'))
 	.addOption(new Option('-o, --output <path>', 'apkg file path').default('./output.apkg'))
 	.addOption(new Option('-n, --deck-name <name>', 'name of the deck').default('md2anki'))
-	.option('--ignore-levels <levels>', 'comma-separated list of heading levels to ignore', a => a.split(',').map(s => Number(s)))
+	.option('--ignore-levels <levels>', 'list of heading levels to ignore', a => a.split(',').map(b => Number(b)).filter(c => c && c >= 0 && c <= 6))
 	.option('--include-empty', 'include empty cards in the deck')
 	.parse(process.argv);
 
