@@ -92,12 +92,14 @@ export function imagesFromTokens(tokens, inputPath) {
 	let images = [];
 	tokens.forEach((token) => {
 		if (token.type === 'image') {
+			// find images in tokens and save them to a list
 			let filePath = path.join(path.dirname(inputPath), token.attrGet('src'));
 			filePath = filePath.split(path.sep).join(path.posix.sep);
 			images.push(filePath);
 		}
 		if (token.type === 'inline') {
 
+			// add nested tokens to tokens. so that they will be processed as well
 			images.push(imagesFromTokens(token.children, inputPath));
 			token.children.forEach(child => {
 				tokens.push(child);
@@ -105,6 +107,7 @@ export function imagesFromTokens(tokens, inputPath) {
 		}
 	});
 
+	// flatten the list to a depth of 1
 	images = images.flat();
 
 	return images.filter(image => image.length > 0);
