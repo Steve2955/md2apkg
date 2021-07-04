@@ -9,7 +9,8 @@ program
 	.option('-i, --input <path>', 'markdown file path', './README.md')
 	.option('-o, --output <path>', 'apkg file path', './output.apkg')
 	.option('-n, --deck-name <name>', 'name of the deck', 'md2anki')
-	.option('-e, --include-empty', 'include empty cards in the deck')
+	.option('--ignore-levels <levels>', 'comma-separated list of heading levels to ignore', a => a.split(',').map(s => Number(s)))
+	.option('--include-empty', 'include empty cards in the deck')
 	.parse(process.argv);
 
 const options = program.opts();
