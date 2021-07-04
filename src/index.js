@@ -99,11 +99,8 @@ export function imagesFromTokens(tokens, inputPath) {
 		}
 		if (token.type === 'inline') {
 
-			// add nested tokens to tokens. so that they will be processed as well
+			// recursively find images in children
 			images.push(imagesFromTokens(token.children, inputPath));
-			token.children.forEach(child => {
-				tokens.push(child);
-			});
 		}
 	});
 
