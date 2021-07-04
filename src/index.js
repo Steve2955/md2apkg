@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import path from 'path';
 
 // markdown parser and html converter
 import mdit from 'markdown-it';
@@ -19,16 +20,22 @@ export default async function (inputPath, outputPath, options) {
 	const markdown = await fs.readFile(inputPath, 'utf8');
 	// tokenize markdown
 	const tokens = tokensFromMarkdown(markdown);
+	// parse tokens for images
+	const images = imagesFromTokens(tokens, inputPath);
 	// parse tokens into individual cards
-	let cards = cardsFromTokens(tokens);
+	let cards = cardsFromTokens(tokens, inputPath);
 	// remove unwanted cards
 	cards = filterCards(cards, options);
 	// some stats
 	console.log(`found ${cards.length} cards!`);
 	// create new anki-deck
-	const deck = deckFromCards(cards, options);
+	const deck = deckFromCards(cards, images, options);
 	// write anki-deck to file
-	await fs.writeFile(outputPath, await deck.save(), 'binary');
+	deck.save().then(zip => {
+		fs.writeFileSync(outputPath, zip, 'binary');
+		console.log(`Deck has been generated: ${outputPath}`);
+	})
+	.catch(err => console.log(err.stack || err));
 }
 
 export function tokensFromMarkdown(markdown) {
@@ -64,14 +71,40 @@ export function filterCards(cards, options) {
 	return cards.filter(card => !card.back.some(token => token.content.trim().includes('<!-- md2anki ignore-card -->'.trim())));
 }
 
-export function deckFromCards(cards, options) {
+export function deckFromCards(cards, images, options) {
 	// create new deck
 	const apkg = new AnkiDeck(options.deckName, { css: '' });
 	console.log(`deck initialized!`);
+	images.forEach(image => {
+		apkg.addMedia(image, fs.readFileSync(image));
+	});
 	// add cards to deck (convert tokens to html)
-	cards.forEach((card, i) => {
+	cards.forEach(card => {
 		apkg.addCard(md.renderer.render(card.front, md.options, {}), md.renderer.render(card.back, md.options, {}));
 	});
 	console.log(`added ${cards.length} cards to the deck!`);
+	console.log(`added ${images.length} images to the deck!`);
 	return apkg;
+}
+
+export function imagesFromTokens(tokens, inputPath) {
+	let images = [];
+	tokens.forEach((token) => {
+		if (token.type === 'image') {
+			let filePath = path.join(path.dirname(inputPath), token.attrGet('src'));
+			filePath = filePath.split(path.sep).join(path.posix.sep);
+			images.push(filePath);
+		}
+		if (token.type === 'inline') {
+
+			images.push(imagesFromTokens(token.children, inputPath));
+			token.children.forEach(child => {
+				tokens.push(child);
+			});
+		}
+	});
+
+	images = images.flat();
+
+	return images.filter(image => image.length > 0);
 }
