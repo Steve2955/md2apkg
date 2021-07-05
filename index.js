@@ -6,7 +6,7 @@ const { version } = createRequire(import.meta.url)('./package.json'); // some ma
 program.version(version);
 
 program
-	.addOption(new Option('-i, --input <path>', 'markdown file path').default('./README.md'))
+	.option('-i, --input <path>', 'markdown file path')
 	.addOption(new Option('-o, --output <path>', 'apkg file path').default('./output.apkg'))
 	.addOption(new Option('-n, --deck-name <name>', 'name of the deck').default('md2anki'))
 	.option('--ignore-levels <levels>', 'list of heading levels to ignore', a => a.split(',').map(b => Number(b)).filter(c => c && c >= 0 && c <= 6))
