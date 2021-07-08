@@ -62,4 +62,18 @@ describe('cards filtering', function () {
 		filteredCards.forEach(card => expect(card.front).to.not.be.undefined);
 		filteredCards.forEach(card => expect(card.back).to.not.be.undefined);
 	});
+	it('should ignore certain heading levels if requested (1,2,3)', function () {
+		let filteredCards = filterCards(cards, {ignoreLevels: [1, 2, 3]});
+		expect(filteredCards.length).to.equal(3);
+		filteredCards.forEach(card => expect(card.front).to.not.be.undefined);
+		filteredCards.forEach(card => expect(card.back).to.not.be.undefined);
+		filteredCards.forEach(card => expect(card.headingLevel).to.be.greaterThan(3));
+	});
+	it('should ignore certain heading levels if requested (1,3,5)', function () {
+		let filteredCards = filterCards(cards, {ignoreLevels: [1, 3, 5]});
+		expect(filteredCards.length).to.equal(3);
+		filteredCards.forEach(card => expect(card.front).to.not.be.undefined);
+		filteredCards.forEach(card => expect(card.back).to.not.be.undefined);
+		filteredCards.forEach(card => expect(card.headingLevel % 2).to.equal(0));
+	});
 });
