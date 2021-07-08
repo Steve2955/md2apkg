@@ -104,14 +104,17 @@ export function imagesFromTokens(tokens, inputPath) {
 		if (token.type === 'image') {
 			// find images in tokens and save them to a list
 			let attrPath = token.attrGet('src');
-			// make the image path relative
-			let filePath = path.join(path.dirname(inputPath), attrPath);
-			// replace \ with / (in case we're on a windows system)
-			filePath = filePath.split(path.sep).join(path.posix.sep);
-			let image = new Image(filePath);
-			// fix the image
-			token.attrSet('src', image.filteredPath)
-			images.push(image);
+			if (!attrPath.includes('://')) {
+				// make the image path relative
+				let filePath = path.join(path.dirname(inputPath), attrPath);
+				// replace \ with / (in case we're on a windows system)
+				filePath = filePath.split(path.sep).join(path.posix.sep);
+				let image = new Image(filePath);
+				// fix the image
+				token.attrSet('src', image.filteredPath)
+				images.push(image);
+			}
+
 		}
 		if (token.type === 'inline') {
 
