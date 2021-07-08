@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import path from 'path';
 
 // markdown parser and html converter
 import mdit from 'markdown-it';
@@ -10,6 +11,7 @@ import AnkiDeckExport from 'anki-apkg-export';
 const AnkiDeck = AnkiDeckExport.default;
 
 import Card from './Card.js';
+import Image from './Image.js';
 
 export default async function (inputPath, outputPath, options) {
 	// check if input file exists
@@ -21,16 +23,22 @@ export default async function (inputPath, outputPath, options) {
 	const markdown = await fs.readFile(inputPath, 'utf8');
 	// tokenize markdown
 	const tokens = tokensFromMarkdown(markdown);
+	// parse tokens for images
+	const images = imagesFromTokens(tokens, inputPath);
 	// parse tokens into individual cards
-	let cards = cardsFromTokens(tokens);
+	let cards = cardsFromTokens(tokens, inputPath);
 	// remove unwanted cards
 	cards = filterCards(cards, options);
 	// some stats
 	console.log(`found ${cards.length} cards!`);
 	// create new anki-deck
-	const deck = deckFromCards(cards, options);
+	const deck = deckFromCards(cards, images, options);
 	// write anki-deck to file
-	await fs.writeFile(outputPath, await deck.save(), 'binary');
+	deck.save().then(zip => {
+		fs.writeFileSync(outputPath, zip, 'binary');
+		console.log(`Deck has been generated: ${outputPath}`);
+	})
+	.catch(err => console.log(err.stack || err));
 }
 
 export function tokensFromMarkdown(markdown) {
@@ -72,15 +80,53 @@ export function filterCards(cards, options) {
 	return cards.filter(card => !(options.ignoreLevels || []).includes(card.headingLevel));
 }
 
-export function deckFromCards(cards, options) {
+export function deckFromCards(cards, images, options) {
 	// create new deck
 	const apkg = new AnkiDeck(options.deckName, { css: '#front * {margin:0; padding:0;}' }); // ToDo: move CSS to different file
 	console.log(`deck initialized!`);
+	// add media files to deck
+	images.forEach(image => {
+		apkg.addMedia(image.filteredPath, fs.readFileSync(image.filePath));
+	});
 	// add cards to deck (convert tokens to html)
 	cards.forEach((card, i) => {
 		const { front, back } = card.renderToHTML(md);
 		apkg.addCard(front, back);
 	});
 	console.log(`added ${cards.length} cards to the deck!`);
+	console.log(`added ${images.length} images to the deck!`);
 	return apkg;
+}
+
+export function imagesFromTokens(tokens, inputPath) {
+	let images = [];
+	tokens.forEach((token) => {
+		if (token.type === 'image') {
+			// find images in tokens and save them to a list
+			let attrPath = token.attrGet('src');
+			// skip external images
+			if (attrPath.includes('://')) return;
+			// make the image path relative
+			let filePath = path.join(path.dirname(inputPath), attrPath);
+			// replace \ with / (in case we're on a windows system)
+			filePath = filePath.split(path.sep).join(path.posix.sep);
+			let image = new Image(filePath);
+			// fix the image
+			token.attrSet('src', image.filteredPath)
+			images.push(image);
+		}
+		if (token.type === 'inline') {
+
+			// recursively find images in children
+			images.push(imagesFromTokens(token.children, inputPath));
+		}
+	});
+
+	// flatten the list to a depth of 1
+	images = images.flat();
+	// this process produces a lot of empty entries, remove them
+	images = images.filter(image => image.filePath.length > 0);
+
+	// only return unique images
+	return [...new Set(images)];
 }
