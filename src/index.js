@@ -11,6 +11,7 @@ import AnkiDeckExport from 'anki-apkg-export';
 const AnkiDeck = AnkiDeckExport.default;
 
 import Card from './Card.js';
+import Image from './Image.js';
 
 export default async function (inputPath, outputPath, options) {
 	// check if input file exists
@@ -85,7 +86,7 @@ export function deckFromCards(cards, images, options) {
 	console.log(`deck initialized!`);
 	// add media files to deck
 	images.forEach(image => {
-		apkg.addMedia(image.replace('/', '#'), fs.readFileSync(image));
+		apkg.addMedia(image.filteredPath, fs.readFileSync(image.filePath));
 	});
 	// add cards to deck (convert tokens to html)
 	cards.forEach((card, i) => {
@@ -102,11 +103,15 @@ export function imagesFromTokens(tokens, inputPath) {
 	tokens.forEach((token) => {
 		if (token.type === 'image') {
 			// find images in tokens and save them to a list
-			let filePath = path.join(path.dirname(inputPath), token.attrGet('src'));
-			token.attrSet('src', token.attrGet('src').replace('/', '#'))
+			let attrPath = token.attrGet('src');
+			// make the image path relative
+			let filePath = path.join(path.dirname(inputPath), attrPath);
 			// replace \ with / (in case we're on a windows system)
 			filePath = filePath.split(path.sep).join(path.posix.sep);
-			images.push(filePath);
+			let image = new Image(filePath);
+			// fix the image
+			token.attrSet('src', image.filteredPath)
+			images.push(image);
 		}
 		if (token.type === 'inline') {
 
@@ -118,7 +123,7 @@ export function imagesFromTokens(tokens, inputPath) {
 	// flatten the list to a depth of 1
 	images = images.flat();
 	// this process produces a lot of empty entries, remove them
-	images = images.filter(image => image.length > 0);
+	images = images.filter(image => image.filePath.length > 0);
 
 	// only return unique images
 	return [...new Set(images)];
