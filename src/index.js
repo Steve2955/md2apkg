@@ -10,6 +10,8 @@ const md = mdit().use(mdcomment);
 import AnkiDeckExport from 'anki-apkg-export';
 const AnkiDeck = AnkiDeckExport.default;
 
+import Card from './Card.js';
+
 export default async function (inputPath, outputPath, options) {
 	// check if input file exists
 	if (!(await fs.pathExists(inputPath))) {
@@ -46,15 +48,19 @@ export function tokensFromMarkdown(markdown) {
 export function cardsFromTokens(tokens) {
 	// parse tokens into individual cards
 	let cards = [];
-	let card = { front: [], back: [] };
+	let card = new Card();
 	let isFront = true;
 	tokens.forEach((token, i) => {
 		// new heading starts or end of token-array reached
 		if ((token.type === 'heading_open' && !isFront) || i == tokens.length - 1) {
+			// find the 'parent' card
+			const parent = [...cards].reverse().find(c => c.headingLevel < card.headingLevel);
+			if(parent) card.setParent(parent);
+			// add finished card to array
 			cards.push(card);
 			// reset variables
 			isFront = true;
-			card = { front: [], back: [] };
+			card = new Card();
 		}
 		// push token to front/back
 		card[isFront ? 'front' : 'back'].push(token);
@@ -68,33 +74,27 @@ export function filterCards(cards, options) {
 	// remove empty cards
 	if (!options.includeEmpty) cards = cards.filter(card => card.back.length);
 	// remove ignored cards
-	return cards.filter(card => !card.back.some(token => token.content.trim().includes('<!-- md2anki ignore-card -->'.trim())));
+	cards = cards.filter(card => !card.back.some(token => token.content.trim().includes('<!-- md2anki ignore-card -->'.trim())));
+	// remove cards from unwanted heading levels
+	return cards.filter(card => !(options.ignoreLevels || []).includes(card.headingLevel));
 }
 
 export function deckFromCards(cards, images, options) {
 	// create new deck
-	const apkg = new AnkiDeck(options.deckName, { css: '' });
+	const apkg = new AnkiDeck(options.deckName, { css: '#front * {margin:0; padding:0;}' }); // ToDo: move CSS to different file
 	console.log(`deck initialized!`);
 	// add media files to deck
 	images.forEach(image => {
 		apkg.addMedia(image.replace('/', '#'), fs.readFileSync(image));
 	});
 	// add cards to deck (convert tokens to html)
-	cards.forEach(card => {
-		apkg.addCard(md.renderer.render(card.front, md.options, {}), fixImagePaths(images, md.renderer.render(card.back, md.options, {})));
+	cards.forEach((card, i) => {
+		const { front, back } = card.renderToHTML(md);
+		apkg.addCard(front, back);
 	});
 	console.log(`added ${cards.length} cards to the deck!`);
 	console.log(`added ${images.length} images to the deck!`);
 	return apkg;
-}
-
-// make sure all images references point to the correct image file (/ replaced with #)
-export function fixImagePaths(images, html) {
-	images.forEach(image => {
-		html = html.replace(image, image.replace('/', '#'));
-	});
-
-	return html;
 }
 
 export function imagesFromTokens(tokens, inputPath) {
@@ -103,6 +103,7 @@ export function imagesFromTokens(tokens, inputPath) {
 		if (token.type === 'image') {
 			// find images in tokens and save them to a list
 			let filePath = path.join(path.dirname(inputPath), token.attrGet('src'));
+			token.attrSet('src', token.attrGet('src').replace('/', '#'))
 			// replace \ with / (in case we're on a windows system)
 			filePath = filePath.split(path.sep).join(path.posix.sep);
 			images.push(filePath);
