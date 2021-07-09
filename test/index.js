@@ -82,11 +82,6 @@ describe('cards filtering', function () {
 		filteredCards.forEach(card => expect(card.headingLevel % 2).to.equal(0));
 	});
 	it('should find one image in tokens', function() {
-		let items = 0;
-		images.forEach(image => {
-			items++;
-		});
-
-		expect(items).to.equal(1);
+		expect(images.length).to.equal(1);
 	});
 });
