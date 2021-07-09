@@ -1,5 +1,7 @@
 # md2anki
 
+[![npm test](https://github.com/Steve2955/md2anki/actions/workflows/npm-test.yml/badge.svg)](https://github.com/Steve2955/md2anki/actions/workflows/npm-test.yml)
+
 A simple markdown to anki-deck converter without any weird custom syntax
 
 > **Disclaimer:** This project is WIP. It may or may not ever be finished.
