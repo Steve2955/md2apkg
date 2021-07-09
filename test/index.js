@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { tokensFromMarkdown, cardsFromTokens, filterCards } from '../src/index.js';
+import { tokensFromMarkdown, cardsFromTokens, filterCards, imagesFromTokens } from '../src/index.js';
 
 const markdownExample = `
 # I'm a H1
@@ -39,17 +39,22 @@ I should be ignored
 <!-- md2anki ignore-card -->
 ###### I'm a H6
 I should be ignored
-<!-- md2anki ignore-card -->`;
+<!-- md2anki ignore-card -->
+
+# I'm a H1
+![I am an image](img/blob.png)`;
 
 describe('cards filtering', function () {
 	const tokens = tokensFromMarkdown(markdownExample);
+	const images = imagesFromTokens(tokens, 'test/test.md')
 	const cards = cardsFromTokens(tokens, {});
+
 	it('should parse tokens to individual cards', function () {
-		expect(cards.length).to.equal(18);
+		expect(cards.length).to.equal(19);
 	});
 	it('should ignore unwanted and empty cards by default', function () {
 		let filteredCards = filterCards(cards, {});
-		expect(filteredCards.length).to.equal(6);
+		expect(filteredCards.length).to.equal(7);
 		filteredCards.forEach(card => {
 			expect(card.front).to.not.be.undefined;
 			expect(card.back).to.not.be.undefined;
@@ -58,7 +63,7 @@ describe('cards filtering', function () {
 	});
 	it('should ignore unwanted and allow empty cards if requested', function () {
 		let filteredCards = filterCards(cards, {includeEmpty: true});
-		expect(filteredCards.length).to.equal(12);
+		expect(filteredCards.length).to.equal(13);
 		filteredCards.forEach(card => expect(card.front).to.not.be.undefined);
 		filteredCards.forEach(card => expect(card.back).to.not.be.undefined);
 	});
@@ -75,5 +80,8 @@ describe('cards filtering', function () {
 		filteredCards.forEach(card => expect(card.front).to.not.be.undefined);
 		filteredCards.forEach(card => expect(card.back).to.not.be.undefined);
 		filteredCards.forEach(card => expect(card.headingLevel % 2).to.equal(0));
+	});
+	it('should find one image in tokens', function() {
+		expect(images.length).to.equal(1);
 	});
 });
