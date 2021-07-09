@@ -23,8 +23,11 @@ export default class Card {
 		for(let i = 0; i < this.front.length; i++)
 			if(this.front[i].type == 'heading_open' || this.front[i].type == 'heading_close') this.front[i].tag = 'h1';
 		// render front and back to html
-		let front = md.renderer.render(this.front, md.options, {});
-		const back = md.renderer.render(this.back, md.options, {});
+		let front = md.renderer.render(this.front, md.options, {})
+			.split('$').reduce((a,b,i) => i % 2 ? `${a}\\(${b}` :`${a}\\)${b}`);
+		let back = md.renderer.render(this.back, md.options, {})
+			.split('$$').reduce((a,b,i) => i % 2 ? `${a}\\[${b}` :`${a}\\]${b}`)
+			.split('$').reduce((a,b,i) => i % 2 ? `${a}\\(${b}` :`${a}\\)${b}`);
 		// display parent topic
 		if (this.parent) front = `<div id="front"><small>${md.render(this.parent.headingStr)}</small>${front}</div>`;
 		return { front, back };
