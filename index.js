@@ -11,6 +11,7 @@ program
 	.addOption(new Option('-n, --deck-name <name>', 'name of the deck').default('md2anki'))
 	.option('--ignore-levels <levels>', 'list of heading levels to ignore', a => a.split(',').map(b => Number(b)).filter(c => c && c >= 0 && c <= 6))
 	.option('--include-empty', 'include empty cards in the deck')
+	.option('--ignore-latex-dollar-syntax', '$\\LaTeX$-Syntax will not be converted to \\(\\LaTeX\\)-Syntax supported by anki')
 	.parse(process.argv);
 
 const options = program.opts();
