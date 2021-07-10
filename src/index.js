@@ -92,7 +92,7 @@ export function deckFromCards(cards, images, options) {
 	});
 	// add cards to deck (convert tokens to html)
 	cards.forEach((card, i) => {
-		const { front, back } = card.renderToHTML(md, options);
+		const { front, back } = card.renderToHTML(md);
 		apkg.addCard(front, back);
 	});
 	console.log(`added ${cards.length} cards to the deck!`);
