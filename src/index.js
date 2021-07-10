@@ -7,7 +7,7 @@ import mdcomment from 'markdown-it-inline-comments';
 const md = mdit().use(mdcomment);
 
 // anki deck creation
-import AnkiDeck from './anki-exporter/index.js';
+import AnkiDeck from 'anki-apkg-export';
 //const AnkiDeck = AnkiDeckExport.default;
 
 import Card from './Card.js';

@@ -16,6 +16,7 @@
 	"author": "Yannis Becker",
 	"license": "MIT",
 	"dependencies": {
+		"anki-apkg-export": "git+https://github.com/Steve2955/anki-apkg-export.git",
 		"commander": "^8.0.0",
 		"fs-extra": "^10.0.0",
 		"jszip": "^3.6.0",
