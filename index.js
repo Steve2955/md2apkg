@@ -8,7 +8,7 @@ program.version(version);
 program
 	.option('-i, --input <path>', 'markdown file path')
 	.addOption(new Option('-o, --output <path>', 'apkg file path').default('./output.apkg'))
-	.addOption(new Option('-n, --deck-name <name>', 'name of the deck').default('md2anki'))
+	.option('-n, --deck-name <name>', 'name of the deck (otherwise defaults to first heading)')
 	.option('--ignore-levels <levels>', 'list of heading levels to ignore', a => a.split(',').map(b => Number(b)).filter(c => c && c >= 0 && c <= 6))
 	.option('--include-empty', 'include empty cards in the deck')
 	.parse(process.argv);

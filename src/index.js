@@ -27,6 +27,8 @@ export default async function (inputPath, outputPath, options) {
 	const images = imagesFromTokens(tokens, inputPath);
 	// parse tokens into individual cards
 	let cards = cardsFromTokens(tokens, inputPath);
+	// default to first heading as deck-name
+	if(cards.length) options.deckName = options.deckName || cards[0].headingStr;
 	// remove unwanted cards
 	cards = filterCards(cards, options);
 	// some stats
@@ -90,7 +92,7 @@ export function deckFromCards(cards, images, options) {
 	});
 	// add cards to deck (convert tokens to html)
 	cards.forEach((card, i) => {
-		const { front, back } = card.renderToHTML(md);
+		const { front, back } = card.renderToHTML(md, options);
 		apkg.addCard(front, back);
 	});
 	console.log(`added ${cards.length} cards to the deck!`);
