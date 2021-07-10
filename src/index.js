@@ -7,8 +7,8 @@ import mdcomment from 'markdown-it-inline-comments';
 const md = mdit().use(mdcomment);
 
 // anki deck creation
-import AnkiDeckExport from 'anki-apkg-export';
-const AnkiDeck = AnkiDeckExport.default;
+import AnkiDeck from './anki-exporter/index.js';
+//const AnkiDeck = AnkiDeckExport.default;
 
 import Card from './Card.js';
 import Image from './Image.js';
@@ -82,7 +82,7 @@ export function filterCards(cards, options) {
 
 export function deckFromCards(cards, images, options) {
 	// create new deck
-	const apkg = new AnkiDeck(options.deckName, { css: '#front * {margin:0; padding:0;}' }); // ToDo: move CSS to different file
+	const apkg = AnkiDeck(options.deckName, { css: '#front * {margin:0; padding:0;}' }); // ToDo: move CSS to different file
 	console.log(`deck initialized!`);
 	// add media files to deck
 	images.forEach(image => {
