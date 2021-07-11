@@ -102,18 +102,16 @@ export function deckFromCards(cards, images, options) {
 		}
 	});
 	// add cards to deck (convert tokens to html)
-	let allTags = [];
+	let allTags = new Set();
 	cards.forEach(card => {
 		const { front, back } = card.renderToHTML(md, options);
 		let tags = card.tags;
-		allTags.push(tags);
+		tags.forEach(tag => { allTags.add(tag); });
 		apkg.addCard(front, back, { tags: tags });
 	});
-	allTags = allTags.flat();
-	allTags = [...new Set(allTags)];
 	console.log(`added ${cards.length} cards to the deck!`);
 	console.log(`added ${images.length} images to the deck!`);
-	console.log(`added ${allTags.length} tags to the deck!`);
+	console.log(`added ${allTags.size} tags to the deck!`);
 	return apkg;
 }
 
