@@ -48,7 +48,12 @@ export default async function (inputPath, outputPath, options) {
 
 export function tokensFromMarkdown(markdown) {
 	// parse markdown to tokens
-	return md.parse(markdown, {});
+	try {
+		return md.parse(markdown, {});
+	}
+	catch (err) {
+		console.log('Markdown parsing error: ' + err.stack)
+	}
 }
 
 export function cardsFromTokens(tokens) {
@@ -94,7 +99,7 @@ export function deckFromCards(cards, images, options) {
 		try {
 			apkg.addMedia(image.filteredPath, fs.readFileSync(image.filePath));
 		} catch (err) {
-			console.error('image import error: ' + err.message);
+			console.error('image import error: ' + err.stack);
 		}
 
 	});
