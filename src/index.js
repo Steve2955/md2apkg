@@ -27,6 +27,8 @@ export default async function (inputPath, outputPath, options) {
 	const images = imagesFromTokens(tokens, inputPath);
 	// parse tokens into individual cards
 	let cards = cardsFromTokens(tokens, inputPath);
+	// default to first heading as deck-name
+	if(cards.length) options.deckName = options.deckName || cards[0].headingStr;
 	// remove unwanted cards
 	cards = filterCards(cards, options);
 	// some stats
