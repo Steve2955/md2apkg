@@ -83,8 +83,6 @@ describe('cards filtering', function () {
 	});
 	it('should find one image in tokens', function() {
 		expect(images.length).to.equal(1);
-
-
 	});
 	// this seems a bit weird but it's probably due to the fact that these paths are always relative to the root dir
 	it('should parse image paths correctly', function() {
