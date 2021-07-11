@@ -101,7 +101,6 @@ export function deckFromCards(cards, images, options) {
 		} catch (err) {
 			console.error('image import error: ' + err.stack);
 		}
-
 	});
 	// add cards to deck (convert tokens to html)
 	cards.forEach((card, i) => {
@@ -131,7 +130,6 @@ export function imagesFromTokens(tokens, inputPath) {
 			images.push(image);
 		}
 		if (token.type === 'inline') {
-
 			// recursively find images in children
 			images.push(imagesFromTokens(token.children, inputPath));
 		}
