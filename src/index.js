@@ -31,6 +31,10 @@ export default async function (inputPath, outputPath, options) {
 	// remove unwanted cards
 	cards = filterCards(cards, options);
 	// some stats
+	if (cards.length < 1) {
+		console.error('attempting to generate an empty deck, aborting...');
+		return;
+	}
 	console.log(`found ${cards.length} cards!`);
 	// create new anki-deck
 	const deck = deckFromCards(cards, images, options);
@@ -87,7 +91,12 @@ export function deckFromCards(cards, images, options) {
 	console.log(`deck initialized!`);
 	// add media files to deck
 	images.forEach(image => {
-		apkg.addMedia(image.filteredPath, fs.readFileSync(image.filePath));
+		try {
+			apkg.addMedia(image.filteredPath, fs.readFileSync(image.filePath));
+		} catch (err) {
+			console.error('image import error: ' + err.message);
+		}
+
 	});
 	// add cards to deck (convert tokens to html)
 	cards.forEach((card, i) => {
