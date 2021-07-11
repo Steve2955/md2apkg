@@ -91,7 +91,7 @@ export function filterCards(cards, options) {
 
 export function deckFromCards(cards, images, options) {
 	// create new deck
-	const apkg = AnkiDeck(options.deckName, { css: '#front * {margin:0; padding:0;}' }); // ToDo: move CSS to different file
+	const apkg = AnkiDeck(options.deckName, { css: fs.readFileSync('src/style.css', 'UTF8').trim() });
 	console.log(`deck initialized!`);
 	// add media files to deck
 	images.forEach(image => {
