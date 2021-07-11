@@ -42,6 +42,8 @@ I should be ignored
 <!-- md2anki ignore-card -->
 
 # I'm a H1
+<!-- md2anki tags tagA tagB tagC tagD -->
+
 ![I am an image](img/blob.png)`;
 
 describe('cards filtering', function () {
@@ -90,5 +92,16 @@ describe('cards filtering', function () {
 	});
 	it('should filter image paths correctly', function() {
 		expect(images[0].filteredPath).to.equal('test#img#blob.png');
+	});
+	it('should find tags', function() {
+		let tags = new Set();
+		cards.forEach(card => {
+			card.tags.forEach(tag => { tags.add(tag); });
+		});
+
+		expect(tags.has('tagA')).to.equal(true);
+		expect(tags.has('tagB')).to.equal(true);
+		expect(tags.has('tagC')).to.equal(true);
+		expect(tags.has('tagD')).to.equal(true);
 	});
 });
