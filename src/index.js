@@ -105,9 +105,9 @@ export function deckFromCards(cards, images, options) {
 	let allTags = new Set();
 	cards.forEach(card => {
 		const { front, back } = card.renderToHTML(md, options);
-		let tags = card.tags;
-		tags.forEach(tag => { allTags.add(tag); });
-		apkg.addCard(front, back, { tags: tags });
+		const tags = card.tags;
+		tags.forEach(tag => allTags.add(tag));
+		apkg.addCard(front, back, { tags });
 	});
 	console.log(`added ${cards.length} cards to the deck!`);
 	console.log(`added ${images.length} images to the deck!`);
