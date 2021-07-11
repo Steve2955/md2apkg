@@ -50,8 +50,7 @@ export function tokensFromMarkdown(markdown) {
 	// parse markdown to tokens
 	try {
 		return md.parse(markdown, {});
-	}
-	catch (err) {
+	} catch (err) {
 		console.log('Markdown parsing error: ' + err.stack)
 	}
 }
