@@ -18,6 +18,18 @@ export default class Card {
 		return this.front[1].content;
 	}
 
+	get tags(){
+		let tags = [];
+		this.back.forEach(({content}) => {
+			if(!content) return;
+			const words = content.split(' ');
+			if(words.length <= 4 || words[0] !== '<!--' || words[1] !== 'md2anki' ||
+				words[2] !== 'tags' || words[words.length-1] !== '-->') return;
+			tags.push(...words.slice(3, -1));
+		});
+		return tags;
+	}
+
 	renderToHTML(md, options){
 		// unify heading levels for consistent look in anki
 		for(let i = 0; i < this.front.length; i++)

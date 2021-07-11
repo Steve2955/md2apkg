@@ -17,3 +17,9 @@ You may want to exlude certain parts of your markdown document. To not create a 
 ```html
 <!-- md2anki ignore-card -->
 ```
+
+Tags for your cards are supported as well, just use the following html-comment.
+
+```html
+<!-- md2anki tags tagA tagB tagC tagD -->
+```
