@@ -23,7 +23,7 @@ export default class Card {
 		this.back.forEach(({content}) => {
 			if(!content) return;
 			const words = content.split(' ');
-			if(words.length <= 4 || words[0] !== '<!--' || words[1] !== 'md2anki' ||
+			if(words.length <= 4 || words[0] !== '<!--' || words[1] !== 'md2apkg' ||
 				words[2] !== 'tags' || words[words.length-1] !== '-->') return;
 			tags.push(...words.slice(3, -1));
 		});

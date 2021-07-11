@@ -11,6 +11,7 @@ import AnkiDeck from 'anki-apkg-export';
 
 import Card from './Card.js';
 import Image from './Image.js';
+import css from './style.js';
 
 export default async function (inputPath, outputPath, options) {
 	// check if input file exists
@@ -84,14 +85,14 @@ export function filterCards(cards, options) {
 	// remove empty cards
 	if (!options.includeEmpty) cards = cards.filter(card => card.back.length);
 	// remove ignored cards
-	cards = cards.filter(card => !card.back.some(token => token.content.trim().includes('<!-- md2anki ignore-card -->'.trim())));
+	cards = cards.filter(card => !card.back.some(token => token.content.trim().includes('<!-- md2apkg ignore-card -->'.trim())));
 	// remove cards from unwanted heading levels
 	return cards.filter(card => !(options.ignoreLevels || []).includes(card.headingLevel));
 }
 
 export function deckFromCards(cards, images, options) {
 	// create new deck
-	const apkg = AnkiDeck(options.deckName, { css: fs.readFileSync('src/style.css', 'UTF8').trim() });
+	const apkg = AnkiDeck(options.deckName, { css });
 	console.log(`deck initialized!`);
 	// add media files to deck
 	images.forEach(image => {

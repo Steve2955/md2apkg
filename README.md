@@ -1,6 +1,6 @@
-# md2anki
+# md2apkg
 
-[![npm test](https://github.com/Steve2955/md2anki/actions/workflows/npm-test.yml/badge.svg)](https://github.com/Steve2955/md2anki/actions/workflows/npm-test.yml)
+[![npm test](https://github.com/Steve2955/md2anki/actions/workflows/npm-test.yml/badge.svg)](https://github.com/Steve2955/md2apkg/actions/workflows/npm-test.yml)
 
 A simple markdown to anki-deck converter without any weird custom syntax
 
@@ -15,11 +15,11 @@ Cards are created for each individual heading. The heading itself is used as the
 You may want to exlude certain parts of your markdown document. To not create a card for a particular heading simply include the following html-comment in its body.
 
 ```html
-<!-- md2anki ignore-card -->
+<!-- md2apkg ignore-card -->
 ```
 
 Tags for your cards are supported as well, just use the following html-comment.
 
 ```html
-<!-- md2anki tags tagA tagB tagC tagD -->
+<!-- md2apkg tags tagA tagB tagC tagD -->
 ```
