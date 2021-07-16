@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "A markdown to anki-deck converter",
 	"author": "Yannis Becker <yannisbecker.dev@gmail.com>",
-	"homepage": "https://github.com/ashlinchak/mdanki",
+	"homepage": "https://github.com/Steve2955/md2apkg",
 	"main": "index.js",
 	"type": "module",
 	"engines": {
