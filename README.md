@@ -1,6 +1,6 @@
 # md2apkg
 
-[![npm test](https://github.com/Steve2955/md2anki/actions/workflows/npm-test.yml/badge.svg)](https://github.com/Steve2955/md2apkg/actions/workflows/npm-test.yml)
+[![npm test](https://github.com/Steve2955/md2apkg/actions/workflows/npm-test.yml/badge.svg)](https://github.com/Steve2955/md2apkg/actions/workflows/npm-test.yml)
 
 A simple markdown to anki-deck converter without any weird custom syntax.
 
