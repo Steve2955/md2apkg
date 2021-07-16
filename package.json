@@ -15,6 +15,10 @@
 	"scripts": {
 		"test": "mocha"
 	},
+	"files":[
+		"index.js",
+		"src/"
+	],
 	"keywords": [
 		"anki",
 		"apkg",
