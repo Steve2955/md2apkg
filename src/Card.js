@@ -39,7 +39,8 @@ export default class Card {
 		let back = md.renderer.render(this.back, md.options, {});
 		// convert $dollar$ LaTeX-Syntax to \(bracket\)-Syntax
 		if(!options.ignoreLatexDollarSyntax){
-			front = front.split('$').reduce((a,b,i) => i % 2 ? `${a}\\(${b}` : `${a}\\)${b}`); // front should only contain inline-math
+			front = front.split('$$').reduce((a,b,i) => i % 2 ? `${a}\\[${b}` : `${a}\\]${b}`)
+				.split('$').reduce((a,b,i) => i % 2 ? `${a}\\(${b}` : `${a}\\)${b}`);
 			back = back.split('$$').reduce((a,b,i) => i % 2 ? `${a}\\[${b}` : `${a}\\]${b}`)
 				.split('$').reduce((a,b,i) => i % 2 ? `${a}\\(${b}` : `${a}\\)${b}`);
 		}

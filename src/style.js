@@ -1,5 +1,5 @@
 export default `
-#front * {
+#front > small {
 	margin:0;
 	padding:0;
 }
