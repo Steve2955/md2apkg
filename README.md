@@ -2,6 +2,8 @@
 
 [![npm test](https://github.com/Steve2955/md2anki/actions/workflows/npm-test.yml/badge.svg)](https://github.com/Steve2955/md2apkg/actions/workflows/npm-test.yml)
 
+<!-- md2apkg split -->
+
 A simple markdown to anki-deck converter without any weird custom syntax.
 
 ## Install
@@ -31,6 +33,10 @@ Advanced options
 
 ## How are cards created?
 
+Hello There. I'm on the front.
+
+%
+
 Cards are created for each individual heading. The heading itself is used as the front, whereas the back contains everything following the heading.
 
 ## Custom Markdown Extensions
@@ -40,6 +46,20 @@ You may want to exlude certain parts of your markdown document. To not create a 
 ```html
 <!-- md2apkg ignore-card -->
 ```
+
+In some cases you might want to include more then the heading on the front of the card.
+
+```md
+## Example Header
+
+This paragraph should be on the front in addition to the heading.
+
+<!-- md2apkg split -->
+
+The back starts here.
+```
+
+Using `%` instead of `<!-- md2apkg split -->` is supported as well.
 
 Tags for your cards are supported as well, just use the following html-comment.
 
