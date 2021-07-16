@@ -2,9 +2,32 @@
 
 [![npm test](https://github.com/Steve2955/md2anki/actions/workflows/npm-test.yml/badge.svg)](https://github.com/Steve2955/md2apkg/actions/workflows/npm-test.yml)
 
-A simple markdown to anki-deck converter without any weird custom syntax
+A simple markdown to anki-deck converter without any weird custom syntax.
 
-> **Disclaimer:** This project is WIP. It may or may not ever be finished.
+## Install
+
+```text
+npm install -g md2apkg
+```
+
+## Usage
+
+Basic Usage
+
+```text
+md2apkg -o deck.apkg README.md
+```
+
+Advanced options
+
+```text
+  -i, --input <path>            markdown file path
+  -o, --output <path>           apkg file path (default: "./output.apkg")
+  -n, --deck-name <name>        name of the deck (otherwise defaults to first heading)
+  --ignore-levels <levels>      list of heading levels to ignore
+  --include-empty               include empty cards in the deck
+  --ignore-latex-dollar-syntax  $\LaTeX$-Syntax will not be converted to \(\LaTeX\)-Syntax supported by anki
+```
 
 ## How are cards created?
 
