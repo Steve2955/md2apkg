@@ -41,7 +41,7 @@ You may want to exlude certain parts of your markdown document. To not create a 
 <!-- md2apkg ignore-card -->
 ```
 
-In some cases you might want to include more then the heading on the front of the card.
+In some cases you might want to include more than the heading on the front of the card.
 
 ```md
 ## Example Header
@@ -53,7 +53,7 @@ This paragraph should be on the front in addition to the heading.
 The back starts here.
 ```
 
-Using `%` instead of `<!-- md2apkg split -->` is works as well.
+Using `%` instead of `<!-- md2apkg split -->` works as well.
 
 Tags for your cards are supported as well, just use the following html-comment.
 
