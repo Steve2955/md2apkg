@@ -1,4 +1,6 @@
-import md2anki from './src/index.js';
+#!/usr/bin/env node
+
+import md2apkg from './src/index.js';
 import { program, Option } from 'commander/esm.mjs';
 import { createRequire } from 'module';
 
@@ -19,5 +21,5 @@ const inputPath = options.input || program.args[0];
 const outputPath = options.output;
 
 (async () => {
-	await md2anki(inputPath, outputPath, options);
+	await md2apkg(inputPath, outputPath, options);
 })();

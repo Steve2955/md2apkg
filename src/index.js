@@ -11,6 +11,7 @@ import AnkiDeck from 'anki-apkg-export';
 
 import Card from './Card.js';
 import Image from './Image.js';
+import css from './style.js';
 
 export default async function (inputPath, outputPath, options) {
 	// check if input file exists
@@ -25,7 +26,7 @@ export default async function (inputPath, outputPath, options) {
 	// parse tokens for images
 	const images = imagesFromTokens(tokens, inputPath);
 	// parse tokens into individual cards
-	let cards = cardsFromTokens(tokens, inputPath);
+	let cards = cardsFromTokens(tokens, options);
 	// default to first heading as deck-name
 	if(cards.length) options.deckName = options.deckName || cards[0].headingStr;
 	// remove unwanted cards
@@ -55,7 +56,7 @@ export function tokensFromMarkdown(markdown) {
 	}
 }
 
-export function cardsFromTokens(tokens) {
+export function cardsFromTokens(tokens, options) {
 	// parse tokens into individual cards
 	let cards = [];
 	let card = new Card();
@@ -74,6 +75,15 @@ export function cardsFromTokens(tokens) {
 		}
 		// push token to front/back
 		card[isFront ? 'front' : 'back'].push(token);
+		// check if the card should be split at this token
+		if(!isFront && token.type === 'inline' && (token.content.trim().includes('<!-- md2apkg split -->'.trim()) || token.content.trim() === '%')){
+			// the split token is not needed anymore
+			card.back.pop();
+			// add everything from the back to the front
+			card.front.push(...card.back);
+			// clear the backside of the card
+			card.back = [];
+		}
 		// check if the end of the front has been reached
 		if (token.type === 'heading_close' && isFront) isFront = false;
 	});
@@ -84,14 +94,14 @@ export function filterCards(cards, options) {
 	// remove empty cards
 	if (!options.includeEmpty) cards = cards.filter(card => card.back.length);
 	// remove ignored cards
-	cards = cards.filter(card => !card.back.some(token => token.content.trim().includes('<!-- md2anki ignore-card -->'.trim())));
+	cards = cards.filter(card => !card.back.some(token => token.type === 'inline' && token.content.trim().includes('<!-- md2apkg ignore-card -->'.trim())));
 	// remove cards from unwanted heading levels
 	return cards.filter(card => !(options.ignoreLevels || []).includes(card.headingLevel));
 }
 
 export function deckFromCards(cards, images, options) {
 	// create new deck
-	const apkg = AnkiDeck(options.deckName, { css: fs.readFileSync('src/style.css', 'UTF8').trim() });
+	const apkg = AnkiDeck(options.deckName, { css });
 	console.log(`deck initialized!`);
 	// add media files to deck
 	images.forEach(image => {

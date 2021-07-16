@@ -1,20 +1,27 @@
 {
-	"name": "md2anki",
+	"name": "md2apkg",
 	"version": "1.0.0",
 	"description": "A markdown to anki-deck converter",
+	"author": "Yannis Becker <yannisbecker.dev@gmail.com>",
+	"homepage": "https://github.com/ashlinchak/mdanki",
 	"main": "index.js",
 	"type": "module",
 	"engines": {
 		"node": ">=13.2.0"
 	},
+	"bin": {
+		"md2apkg": "index.js"
+	},
 	"scripts": {
 		"test": "mocha"
 	},
 	"keywords": [
-		"anki"
+		"anki",
+		"apkg",
+		"markdown",
+		"md"
 	],
-	"author": "Yannis Becker",
-	"license": "MIT",
+	"license": "GPL-3.0-only",
 	"dependencies": {
 		"anki-apkg-export": "git+https://github.com/Steve2955/anki-apkg-export.git",
 		"commander": "^8.0.0",
@@ -28,5 +35,9 @@
 	"devDependencies": {
 		"chai": "^4.3.4",
 		"mocha": "^9.0.2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Steve2955/md2apkg.git"
 	}
 }

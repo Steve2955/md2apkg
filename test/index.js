@@ -24,25 +24,25 @@ and I'm not empty
 
 # I'm a H1
 I should be ignored
-<!-- md2anki ignore-card -->
+<!-- md2apkg ignore-card -->
 ## I'm a H2
 I should be ignored
-<!-- md2anki ignore-card -->
+<!-- md2apkg ignore-card -->
 ### I'm a H3
 I should be ignored
-<!-- md2anki ignore-card -->
+<!-- md2apkg ignore-card -->
 #### I'm a H4
 I should be ignored
-<!-- md2anki ignore-card -->
+<!-- md2apkg ignore-card -->
 ##### I'm a H5
 I should be ignored
-<!-- md2anki ignore-card -->
+<!-- md2apkg ignore-card -->
 ###### I'm a H6
 I should be ignored
-<!-- md2anki ignore-card -->
+<!-- md2apkg ignore-card -->
 
 # I'm a H1
-<!-- md2anki tags tagA tagB tagC tagD -->
+<!-- md2apkg tags tagA tagB tagC tagD -->
 
 ![I am an image](img/blob.png)`;
 
