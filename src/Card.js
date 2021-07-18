@@ -43,7 +43,6 @@ export default class Card {
 				<script>hljs.highlightAll();</script>
 				` + back;
 
-
 		// convert $dollar$ LaTeX-Syntax to \(bracket\)-Syntax
 		if(!options.ignoreLatexDollarSyntax){
 			front = front.split('$$').reduce((a,b,i) => i % 2 ? `${a}\\[${b}` : `${a}\\]${b}`)
