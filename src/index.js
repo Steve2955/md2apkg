@@ -4,7 +4,24 @@ import path from 'path';
 // markdown parser and html converter
 import mdit from 'markdown-it';
 import mdcomment from 'markdown-it-inline-comments';
-const md = mdit().use(mdcomment);
+import hljs from "highlight.js";
+
+var md = mdit({
+	highlight: function (str, lang) {
+		if (lang && hljs.getLanguage(lang)) {
+			try {
+				return hljs.highlight(str, { language: lang }).value;
+			} catch (__) {}
+		}
+
+		try {
+			return hljs.highlightAuto(str).value;
+		} catch (__) {}
+
+		return ''; // use external default escaping
+	},
+	inline: true
+}).use(mdcomment);
 
 // anki deck creation
 import AnkiDeck from 'anki-apkg-export';
@@ -56,14 +73,14 @@ export function tokensFromMarkdown(markdown) {
 	}
 }
 
-export function cardsFromTokens(tokens, options) {
+export function cardsFromTokens(tokens) {
 	// parse tokens into individual cards
 	let cards = [];
 	let card = new Card();
 	let isFront = true;
 	tokens.forEach((token, i) => {
 		// new heading starts or end of token-array reached
-		if ((token.type === 'heading_open' && !isFront) || i == tokens.length - 1) {
+		if ((token.type === 'heading_open' && !isFront) || i === tokens.length - 1) {
 			// find the 'parent' card
 			const parent = [...cards].reverse().find(c => c.headingLevel < card.headingLevel);
 			if(parent) card.setParent(parent);
