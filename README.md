@@ -27,6 +27,7 @@ Advanced options
   --ignore-levels <levels>      list of heading levels to ignore
   --include-empty               include empty cards in the deck
   --ignore-latex-dollar-syntax  $\LaTeX$-Syntax will not be converted to \(\LaTeX\)-Syntax supported by anki
+  --code-style                  highlight.js style for code syntax highlighting (defaults to "github")
 ```
 
 ## How are cards created?

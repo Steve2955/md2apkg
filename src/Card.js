@@ -1,3 +1,5 @@
+import fs from 'fs-extra';
+
 export default class Card {
 	constructor(front=[], back=[]){
 		this.front = front;
@@ -38,10 +40,7 @@ export default class Card {
 		let front = md.renderer.render(this.front, md.options, {});
 		let back = md.renderer.render(this.back, md.options, {});
 
-		back = `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/default.min.css">
-				<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js"></script>
-				<script>hljs.highlightAll();</script>
-				` + back;
+		back = `<style>${fs.readFileSync(`node_modules/@highlightjs/cdn-assets/styles/${options.codeStyle}.min.css`)}</style>` + back;
 
 		// convert $dollar$ LaTeX-Syntax to \(bracket\)-Syntax
 		if(!options.ignoreLatexDollarSyntax){
