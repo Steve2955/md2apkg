@@ -18,6 +18,7 @@ var md = mdit({
 			return hljs.highlightAuto(str).value;
 		} catch (__) {}
 
+		console.error("Syntax highlighting failed!");
 		return ''; // use external default escaping
 	},
 	inline: true
