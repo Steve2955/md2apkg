@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import filedirname from 'filedirname';
-const [__filename, __dirname] = filedirname(new Error());
+const [__dirname] = filedirname(new Error());
 
 
 // markdown parser and html converter
