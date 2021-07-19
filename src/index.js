@@ -1,5 +1,8 @@
 import fs from 'fs-extra';
 import path from 'path';
+import filedirname from 'filedirname';
+const [__filename, __dirname] = filedirname(new Error());
+
 
 // markdown parser and html converter
 import mdit from 'markdown-it';
@@ -29,7 +32,6 @@ import AnkiDeck from 'anki-apkg-export';
 
 import Card from './Card.js';
 import Image from './Image.js';
-import css from './style.js';
 
 export default async function (inputPath, outputPath, options) {
 	// check if input file exists
@@ -118,6 +120,12 @@ export function filterCards(cards, options) {
 }
 
 export function deckFromCards(cards, images, options) {
+	// load syntax-highlighting css
+	let css = fs.readFileSync(path.resolve(__dirname, `../node_modules/@highlightjs/cdn-assets/styles/${options.codeStyle}.min.css`),'utf8');
+	// remove comment from css, because that breaks things for some reason
+	css = css.replace(/\/\*[\s\S]*\*\//gm, '');
+	// load some more default css styles
+	css += fs.readFileSync(path.resolve(__dirname, `./style.css`),'utf8');
 	// create new deck
 	const apkg = AnkiDeck(options.deckName, { css });
 	console.log(`deck initialized!`);

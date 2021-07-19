@@ -26,6 +26,7 @@
 		"@highlightjs/cdn-assets": "^11.1.0",
 		"anki-apkg-export": "git+https://github.com/Steve2955/anki-apkg-export.git",
 		"commander": "^8.0.0",
+		"filedirname": "^2.4.0",
 		"fs-extra": "^10.0.0",
 		"highlight.js": "^11.1.0",
 		"jszip": "^3.6.0",

@@ -1,5 +1,3 @@
-import fs from 'fs-extra';
-
 export default class Card {
 	constructor(front=[], back=[]){
 		this.front = front;
@@ -39,9 +37,6 @@ export default class Card {
 		// render front and back to html
 		let front = md.renderer.render(this.front, md.options, {});
 		let back = md.renderer.render(this.back, md.options, {});
-
-		back = `<style>${fs.readFileSync(`node_modules/@highlightjs/cdn-assets/styles/${options.codeStyle}.min.css`)}</style>` + back;
-
 		// convert $dollar$ LaTeX-Syntax to \(bracket\)-Syntax
 		if(!options.ignoreLatexDollarSyntax){
 			front = front.split('$$').reduce((a,b,i) => i % 2 ? `${a}\\[${b}` : `${a}\\]${b}`)
