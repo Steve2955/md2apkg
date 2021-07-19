@@ -37,13 +37,6 @@ export default class Card {
 		// render front and back to html
 		let front = md.renderer.render(this.front, md.options, {});
 		let back = md.renderer.render(this.back, md.options, {});
-		// convert $dollar$ LaTeX-Syntax to \(bracket\)-Syntax
-		if(!options.ignoreLatexDollarSyntax){
-			front = front.split('$$').reduce((a,b,i) => i % 2 ? `${a}\\[${b}` : `${a}\\]${b}`)
-				.split('$').reduce((a,b,i) => i % 2 ? `${a}\\(${b}` : `${a}\\)${b}`);
-			back = back.split('$$').reduce((a,b,i) => i % 2 ? `${a}\\[${b}` : `${a}\\]${b}`)
-				.split('$').reduce((a,b,i) => i % 2 ? `${a}\\(${b}` : `${a}\\)${b}`);
-		}
 		// display parent topic
 		if (this.parent) front = `<div id="front"><small>${md.render(this.parent.headingStr)}</small>${front}</div>`;
 		return { front, back };
