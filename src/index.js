@@ -9,7 +9,7 @@ import mdit from 'markdown-it';
 import mdcomment from 'markdown-it-inline-comments';
 import hljs from "highlight.js";
 
-var md = mdit({
+const md = mdit({
 	highlight: function (str, lang) {
 		if (lang && hljs.getLanguage(lang)) {
 			try {
