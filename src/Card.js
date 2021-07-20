@@ -33,7 +33,7 @@ export default class Card {
 	renderToHTML(md, options){
 		// unify heading levels for consistent look in anki
 		for(let i = 0; i < this.front.length; i++)
-			if(this.front[i].type == 'heading_open' || this.front[i].type == 'heading_close') this.front[i].tag = 'h1';
+			if(this.front[i].type === 'heading_open' || this.front[i].type === 'heading_close') this.front[i].tag = 'h1';
 		// render front and back to html
 		let front = md.renderer.render(this.front, md.options, {});
 		let back = md.renderer.render(this.back, md.options, {});

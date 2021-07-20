@@ -14,6 +14,7 @@ program
 	.option('--ignore-levels <levels>', 'list of heading levels to ignore', a => a.split(',').map(b => Number(b)).filter(c => c && c >= 0 && c <= 6))
 	.option('--include-empty', 'include empty cards in the deck')
 	.option('--ignore-latex-dollar-syntax', '$\\LaTeX$-Syntax will not be converted to \\(\\LaTeX\\)-Syntax supported by anki')
+	.addOption(new Option('--code-style <codeStyle>', 'highlight.js style for code syntax highlighting').default('github'))
 	.parse(process.argv);
 
 const options = program.opts();
