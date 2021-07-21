@@ -40,7 +40,7 @@ export default async function (inputPath, outputPath, options) {
 		return;
 	}
 	// read markdown as text
-	const markdown = await fs.readFile(inputPath, 'utf8');
+	const markdown = preprocessMarkdown(await fs.readFile(inputPath, 'utf8'), options);
 	// tokenize markdown
 	const tokens = tokensFromMarkdown(markdown);
 	// parse tokens for images
@@ -48,7 +48,7 @@ export default async function (inputPath, outputPath, options) {
 	// parse tokens into individual cards
 	let cards = cardsFromTokens(tokens, options);
 	// default to first heading as deck-name
-	if(cards.length) options.deckName = options.deckName || cards[0].headingStr;
+	if (cards.length) options.deckName = options.deckName || cards[0].headingStr;
 	// remove unwanted cards
 	cards = filterCards(cards, options);
 	// some stats
@@ -65,6 +65,15 @@ export default async function (inputPath, outputPath, options) {
 		console.log(`Deck has been generated: ${outputPath}`);
 	})
 	.catch(err => console.log(err.stack || err));
+}
+
+export function preprocessMarkdown(md, options){
+	// convert $dollar$ LaTeX-Syntax to \(bracket\)-Syntax
+	if(!options.ignoreLatexDollarSyntax){
+		md = md.split('```').map((md,i) => i % 2 ? md: md.split('$$').reduce((a,b,i) => i % 2 ? `${a}\\\\[${b}` : `${a}\\\\]${b}`)
+			.split('$').reduce((a,b,i) => i % 2 ? `${a}\\\\(${b}` : `${a}\\\\)${b}`)).join('```');
+	}
+	return md;
 }
 
 export function tokensFromMarkdown(markdown) {
