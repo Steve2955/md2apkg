@@ -1,8 +1,15 @@
-# md2apkg
 
-[![npm test](https://github.com/Steve2955/md2apkg/actions/workflows/npm-test.yml/badge.svg)](https://github.com/Steve2955/md2apkg/actions/workflows/npm-test.yml)
+<p align="center">
+  <img width="100px" src="https://user-images.githubusercontent.com/21085384/126459451-0bbdb359-9ef3-48e9-ab3b-5294bfac7fd3.png">
+</p>
 
-A simple markdown to anki-deck converter without any weird custom syntax.
+<h3 align="center">md2apkg</h3>
+
+<p align="center">A simple markdown to anki-deck converter without any weird custom syntax.</p>
+
+<p align="center">
+  <a href="https://github.com/Steve2955/md2apkg/actions/workflows/npm-test.yml"><img alt="npm test" src="https://github.com/Steve2955/md2apkg/actions/workflows/npm-test.yml/badge.svg"></a>
+</p>
 
 ## Install
 
