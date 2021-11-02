@@ -130,7 +130,12 @@ export function filterCards(cards, options) {
 
 export function deckFromCards(cards, images, options) {
 	// load syntax-highlighting css
-	let css = fs.readFileSync(path.resolve(__dirname, `../node_modules/@highlightjs/cdn-assets/styles/${options.codeStyle}.min.css`),'utf8');
+	let css;
+	try{ // why can't I just import CSS like es6 modules ?!
+		css = fs.readFileSync(path.resolve(__dirname, `../../@highlightjs/cdn-assets/styles/${options.codeStyle}.min.css`),'utf8');
+	}catch(err){
+		css = fs.readFileSync(path.resolve(__dirname, `../node_modules/@highlightjs/cdn-assets/styles/${options.codeStyle}.min.css`),'utf8');
+	}
 	// remove comment from css, because that breaks things for some reason
 	css = css.replace(/\/\*[\s\S]*\*\//gm, '');
 	// load some more default css styles
