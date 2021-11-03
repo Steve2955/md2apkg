@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+import resolve from 'resolve';
 import filedirname from 'filedirname';
 const [_, __dirname] = filedirname(new Error());
 
@@ -129,8 +130,12 @@ export function filterCards(cards, options) {
 }
 
 export function deckFromCards(cards, images, options) {
+	// get path to highlight.js cdn directory
+	let cssPath = path.dirname(resolve.sync('@highlightjs/cdn-assets/package.json', { basedir: __dirname }));
+	// construct path to highlight.js stylesheet
+	cssPath = path.resolve(cssPath, `styles/${options.codeStyle}.min.css`);
 	// load syntax-highlighting css
-	let css = fs.readFileSync(path.resolve(__dirname, `../node_modules/@highlightjs/cdn-assets/styles/${options.codeStyle}.min.css`),'utf8');
+	let css = fs.readFileSync(cssPath, 'utf8');
 	// remove comment from css, because that breaks things for some reason
 	css = css.replace(/\/\*[\s\S]*\*\//gm, '');
 	// load some more default css styles
