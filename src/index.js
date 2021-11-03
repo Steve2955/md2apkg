@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import resolve from 'resolve'
+import resolve from 'resolve';
 import filedirname from 'filedirname';
 const [_, __dirname] = filedirname(new Error());
 
@@ -135,7 +135,7 @@ export function deckFromCards(cards, images, options) {
 	// construct path to highlight.js stylesheet
 	cssPath = path.resolve(cssPath, `styles/${options.codeStyle}.min.css`);
 	// load syntax-highlighting css
-	let css = fs.readFileSync(cssPath,'utf8');
+	let css = fs.readFileSync(cssPath, 'utf8');
 	// remove comment from css, because that breaks things for some reason
 	css = css.replace(/\/\*[\s\S]*\*\//gm, '');
 	// load some more default css styles
