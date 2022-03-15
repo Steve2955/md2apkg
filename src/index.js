@@ -8,6 +8,7 @@ const [_, __dirname] = filedirname(new Error());
 // markdown parser and html converter
 import mdit from 'markdown-it';
 import mdcomment from 'markdown-it-inline-comments';
+import mdcheckbox from 'markdown-it-checkbox';
 import hljs from "highlight.js";
 
 const md = mdit({
@@ -26,7 +27,7 @@ const md = mdit({
 		return ''; // use external default escaping
 	},
 	inline: true
-}).use(mdcomment);
+}).use(mdcomment).use(mdcheckbox);
 
 // anki deck creation
 import AnkiDeck from 'anki-apkg-export';
