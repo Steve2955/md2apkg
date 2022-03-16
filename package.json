@@ -28,7 +28,7 @@
 	"license": "GPL-3.0-only",
 	"dependencies": {
 		"@highlightjs/cdn-assets": "^11.1.0",
-		"anki-apkg-export": "git+https://github.com/Steve2955/anki-apkg-export.git",
+		"@steve2955/anki-apkg-export": "^5.0.0",
 		"commander": "^8.0.0",
 		"filedirname": "^2.4.0",
 		"fs-extra": "^10.0.0",

@@ -30,7 +30,7 @@ const md = mdit({
 }).use(mdcomment).use(mdcheckbox);
 
 // anki deck creation
-import AnkiDeck from 'anki-apkg-export';
+import AnkiDeck from '@steve2955/anki-apkg-export';
 
 import Card from './Card.js';
 import Image from './Image.js';
