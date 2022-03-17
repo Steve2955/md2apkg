@@ -59,13 +59,12 @@ function compareChecks(){
                 var answerK = inputs[k].labels[0].innerText;
                 // check if both checkboxes have the same text
                 if(answerI === answerK){
-                    inputs[i].labels[0].style.fontWeight = "bold";
                     // do the checkboxes match?
                     if(inputs[i].checked === inputs[k].checked){
-                        inputs[i].labels[0].style.color = "green";
+                        inputs[i].classList.add('correct');
                         correct++;
                     }else{
-                        inputs[i].labels[0].style.color = "red";
+                        inputs[i].classList.add('failed');
                         failed++;
                     }
                 }
@@ -74,7 +73,7 @@ function compareChecks(){
     }
     // show the result as percentage
     var result = document.createElement("h2");
-    result.style.color = failed == 0 ? "green": "red";
+    result.classList.add(failed == 0 ? "success" : "failed");
     result.innerText = parseInt((correct/(failed+correct))*100) + "%";
     document.getElementById("qa").appendChild(result);
 }

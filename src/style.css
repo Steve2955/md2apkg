@@ -8,3 +8,31 @@ table, th, td{
 	border-collapse: collapse;
 	padding: 3px;
 }
+
+input.correct + label{
+	font-weight: bold;
+	color: green;
+}
+
+input.failed + label{
+	font-weight: bold;
+	color: red;
+}
+
+.nightMode input.correct + label{
+	font-weight: bold;
+	color: green;
+}
+
+.nightMode input.failed + label{
+	font-weight: bold;
+	color: red;
+}
+
+h2.success{
+	color: green;
+}
+
+h2.failed{
+	color: red;
+}
