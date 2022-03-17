@@ -18,6 +18,7 @@ function initMC(){
             Persistence.setItem("back", true);
         }else{ // BACK
             restoreChecks();
+            compareChecks();
             // Clear all saved key-value pairs
             Persistence.clear();
         }
@@ -40,5 +41,41 @@ function restoreChecks(){
             inputs[i].checked = Persistence.getItem(inputs[i].id) == null ? inputs[i].checked: Persistence.getItem(inputs[i].id);
         }
     }
+}
+
+function compareChecks(){
+    var inputs = document.getElementsByTagName("input");
+    var correct = 0;
+    var failed = 0;
+    for(var i = 0; i < inputs.length; i++) {
+        if(inputs[i].type == "checkbox"){
+            // text of the first checkbox
+            var answerI = inputs[i].labels[0].innerText;
+            // look for the corresponding checkbox in the other side
+            for(var k = i+1; k < inputs.length; k++) {
+                // skip none chechbox inputs
+                if(inputs[k].type != "checkbox") continue;
+                // text of the second checkbox
+                var answerK = inputs[k].labels[0].innerText;
+                // check if both checkboxes have the same text
+                if(answerI === answerK){
+                    inputs[i].labels[0].style.fontWeight = "bold";
+                    // do the checkboxes match?
+                    if(inputs[i].checked === inputs[k].checked){
+                        inputs[i].labels[0].style.color = "green";
+                        correct++;
+                    }else{
+                        inputs[i].labels[0].style.color = "red";
+                        failed++;
+                    }
+                }
+            }
+        }
+    }
+    // show the result as percentage
+    var result = document.createElement("h2");
+    result.style.color = failed == 0 ? "green": "red";
+    result.innerText = parseInt((correct/(failed+correct))*100) + "%";
+    document.getElementById("qa").appendChild(result);
 }
 
