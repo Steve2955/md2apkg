@@ -68,3 +68,32 @@ Tags for your cards are supported as well, just use the following html-comment.
 ```html
 <!-- md2apkg tags tagA tagB tagC tagD -->
 ```
+
+### Advanced Card Types
+
+#### Multiple Choice
+
+`md2apkg` supports multiple choice cards. The following example shows how they can be used. 
+The front of the card always shows all the answers with unticked checkboxes. 
+The back contains the same answers with correctly ticked checkboxes. 
+When switching the sides of the cards answers are automatically compared and highlighted in red/green. For this to work both sides have to contain the same answers with the same exact formating (including capitalization).
+
+```md
+## Which of the following cities are located within Thuringia (germany)?
+
+<!-- md2apkg type multiple-choice -->
+
+- [ ] Erfurt
+- [ ] Frankfurt
+- [ ] Munich
+- [ ] Dresden
+- [ ] Gera
+
+<!-- md2apkg split -->
+
+- [X] Erfurt
+- [ ] Frankfurt
+- [ ] Munich
+- [ ] Dresden
+- [X] Gera
+```
