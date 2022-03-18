@@ -11,11 +11,11 @@ function initMC(){
         back = Persistence.getItem("back");
         if(!back){ // FRONT
             // generate and store some random numbers for shuffling
+            var uls = document.getElementsByTagName('ul');
             var shuffle = new Array(uls[0].children.length-1);
             for(var i = shuffle.length; i >= 0; i--) shuffle[i] = Math.random() * i | 0;
             Persistence.setItem("shuffle", shuffle);
             // shuffle answers
-            var uls = document.getElementsByTagName('ul');
             for (var i = shuffle.length-1; i >= 0; i--) {
                 for (var j = 0; j < uls.length; j++){
                     uls[j].appendChild(uls[j].children[shuffle[i]]);
