@@ -76,6 +76,7 @@ Tags for your cards are supported as well, just use the following html-comment.
 `md2apkg` supports multiple choice cards. The following example shows how they can be used. 
 The front of the card always shows all the answers with unticked checkboxes. 
 The back contains the same answers with correctly ticked checkboxes. 
+All answers are shuffled in a random order (use `<!-- md2apkg type multiple-choice-no-shuffle -->` to disable this behavior).
 When switching the sides of the cards answers are automatically compared and highlighted in red/green. 
 For this to work both sides have to contain the same answers with the same exact formating (including capitalization).
 

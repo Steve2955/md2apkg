@@ -10,15 +10,18 @@ function initMC(){
         // distinguish between back and front of the card
         back = Persistence.getItem("back");
         if(!back){ // FRONT
-            // generate and store some random numbers for shuffling
-            var uls = document.getElementsByTagName('ul');
-            var shuffle = new Array(uls[0].children.length-1);
-            for(var i = shuffle.length; i >= 0; i--) shuffle[i] = Math.random() * i | 0;
-            Persistence.setItem("shuffle", shuffle);
-            // shuffle answers
-            for (var i = shuffle.length-1; i >= 0; i--) {
-                for (var j = 0; j < uls.length; j++){
-                    uls[j].appendChild(uls[j].children[shuffle[i]]);
+            const useShuffle = !document.getElementById('no-shuffle');
+            if(useShuffle){
+                // generate and store some random numbers for shuffling
+                var uls = document.getElementsByTagName('ul');
+                var shuffle = new Array(uls[0].children.length-1);
+                for(var i = shuffle.length; i >= 0; i--) shuffle[i] = Math.random() * i | 0;
+                Persistence.setItem("shuffle", shuffle);
+                // shuffle answers
+                for (var i = shuffle.length-1; i >= 0; i--) {
+                    for (var j = 0; j < uls.length; j++){
+                        uls[j].appendChild(uls[j].children[shuffle[i]]);
+                    }
                 }
             }
             // add change listener to all checkboxes
@@ -30,11 +33,14 @@ function initMC(){
         }else{ // BACK
             restoreChecks();
             // restore shuffle with saved random numbers
-            var shuffle = Persistence.getItem("shuffle");
-            var uls = document.getElementsByTagName('ul');
-            for (var i = shuffle.length-1; i >= 0; i--) {
-                for (var j = 0; j < uls.length; j++){
-                    uls[j].appendChild(uls[j].children[shuffle[i]]);
+            const useShuffle = !document.getElementById('no-shuffle');
+            if(useShuffle){
+                var shuffle = Persistence.getItem("shuffle");
+                var uls = document.getElementsByTagName('ul');
+                for (var i = shuffle.length-1; i >= 0; i--) {
+                    for (var j = 0; j < uls.length; j++){
+                        uls[j].appendChild(uls[j].children[shuffle[i]]);
+                    }
                 }
             }
             compareChecks();

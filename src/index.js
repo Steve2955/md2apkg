@@ -165,7 +165,7 @@ export function deckFromCards(cards, images, options) {
 		const tags = card.tags;
 		tags.forEach(tag => allTags.add(tag));
 		// multiple choice cards require a special treatment
-		if(card.type === 'multiple-choice'){
+		if(card.type === 'multiple-choice' || card.type === 'multiple-choice-no-shuffle'){
 			// check if the front contains answers
 			if(front.indexOf('<ul>') === -1){
 				// add back to the front
@@ -183,6 +183,8 @@ export function deckFromCards(cards, images, options) {
 			// use anki-persistence for persistent data between both sides of the card and apply multiple choice extension
 			front = `<script>${multipleChoice}</script><script>${persistence}</script>${front}`;
 			front = `<div id="overlay"></div>${front}`;
+			// disable shuffle using a div if requested
+			if(card.type === 'multiple-choice-no-shuffle') front += `<div id="no-shuffle"></div>`;
 		}
 		// add card to deck
 		apkg.addCard(front, back, { tags });

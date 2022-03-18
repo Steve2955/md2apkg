@@ -39,7 +39,7 @@ export default class Card {
 				words[2] !== 'type' || words[words.length-1] !== '-->') return;
 			type = words[3];
 		}));
-		if(!['default', 'multiple-choice'].includes(type)){
+		if(!['default', 'multiple-choice', 'multiple-choice-no-shuffle'].includes(type)){
 			console.warn(`unknown card type "${type}", using "default" instead`);
 			return 'default';
 		}
