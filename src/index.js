@@ -155,8 +155,10 @@ export function deckFromCards(cards, images, options) {
 	
 	// add cards to deck (convert tokens to html)
 	let allTags = new Set();
+
+	// load some anki-extensions
 	const persistence = fs.readFileSync(path.resolve(__dirname, './anki-extensions/persistence.js'), 'utf8');
-	const multipleChoiceFront = fs.readFileSync(path.resolve(__dirname, './anki-extensions/multiple-choice-front.js'), 'utf8');
+	const multipleChoice = fs.readFileSync(path.resolve(__dirname, './anki-extensions/multiple-choice.js'), 'utf8');
 
 	cards.forEach(card => {
 		let { front, back } = card.renderToHTML(md, options);
@@ -165,7 +167,8 @@ export function deckFromCards(cards, images, options) {
 		// multiple choice cards require a special treatment
 		if(card.type === 'multiple-choice'){
 			// use anki-persistence for persistent data between both sides of the card
-			front = `<script>${multipleChoiceFront}</script><script>${persistence}</script>${front}`;
+			front = `<script>${multipleChoice}</script><script>${persistence}</script>${front}`;
+			front = `<div id="overlay"></div>${front}`;
 		}
 		// add card to deck
 		apkg.addCard(front, back, { tags });

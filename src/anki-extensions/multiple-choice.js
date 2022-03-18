@@ -73,8 +73,15 @@ function compareChecks(){
     }
     // show the result as percentage
     var result = document.createElement("h2");
-    result.classList.add(failed == 0 ? "success" : "failed");
-    result.innerText = parseInt((correct/(failed+correct))*100) + "%";
+    var overlay = document.getElementById("overlay");
+    if(failed == 0){
+        result.classList.add("success");
+        overlay.classList.add("success");
+    }else{
+        result.classList.add("failed");
+        overlay.classList.add("failed");
+    }
+    result.innerText = parseInt((correct/(failed+correct))*100) + " %";
     document.getElementById("qa").appendChild(result);
 }
 
