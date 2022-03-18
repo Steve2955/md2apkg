@@ -30,6 +30,22 @@ export default class Card {
 		return tags;
 	}
 
+	get type(){
+		let type = 'default';
+		[this.front, this.back].forEach(side => side.forEach(({content}) => {
+			if(!content) return;
+			const words = content.split(' ');
+			if(words.length !== 5 || words[0] !== '<!--' || words[1] !== 'md2apkg' ||
+				words[2] !== 'type' || words[words.length-1] !== '-->') return;
+			type = words[3];
+		}));
+		if(!['default', 'multiple-choice', 'multiple-choice-no-shuffle'].includes(type)){
+			console.warn(`unknown card type "${type}", using "default" instead`);
+			return 'default';
+		}
+		return type;
+	}
+
 	renderToHTML(md, options){
 		// unify heading levels for consistent look in anki
 		for(let i = 0; i < this.front.length; i++)

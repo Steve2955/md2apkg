@@ -152,12 +152,46 @@ export function deckFromCards(cards, images, options) {
 			console.error('image import error: ' + err.stack);
 		}
 	});
+	
 	// add cards to deck (convert tokens to html)
 	let allTags = new Set();
+
+	// load some anki-extensions
+	const persistence = fs.readFileSync(path.resolve(__dirname, './anki-extensions/persistence.js'), 'utf8');
+	const multipleChoice = fs.readFileSync(path.resolve(__dirname, './anki-extensions/multiple-choice.js'), 'utf8');
+
 	cards.forEach(card => {
-		const { front, back } = card.renderToHTML(md, options);
+		let { front, back } = card.renderToHTML(md, options);
 		const tags = card.tags;
 		tags.forEach(tag => allTags.add(tag));
+		// multiple choice cards require a special treatment
+		if(card.type === 'multiple-choice' || card.type === 'multiple-choice-no-shuffle'){
+			// check if the front contains answers
+			if(front.indexOf('<ul>') === -1){
+				// add back to the front
+				front += back;
+				// copy answers to the back
+				const start = front.indexOf('<ul>');
+				let end = front.indexOf('</ul>');
+				// for some reason some lists are not closed properly
+				if(end == -1){
+					front += '</ul>';	
+					end = front.indexOf('</ul>');
+				}
+				back = front.substring(start, end + 5);
+				// remove ticks on the front
+				front = front.split(' checked="true"').join('');
+				// change ids on the front
+				front = front.split('id="checkbox').join('id="checkboxf');
+				front = front.split('for="checkbox').join('for="checkboxf');
+			}
+			// use anki-persistence for persistent data between both sides of the card and apply multiple choice extension
+			front = `<script>${multipleChoice}</script><script>${persistence}</script>${front}`;
+			front = `<div id="overlay"></div>${front}`;
+			// disable shuffle using a div if requested
+			if(card.type === 'multiple-choice-no-shuffle') front += `<div id="no-shuffle"></div>`;
+		}
+		// add card to deck
 		apkg.addCard(front, back, { tags });
 	});
 	console.log(`added ${cards.length} cards to the deck!`);
