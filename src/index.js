@@ -166,7 +166,21 @@ export function deckFromCards(cards, images, options) {
 		tags.forEach(tag => allTags.add(tag));
 		// multiple choice cards require a special treatment
 		if(card.type === 'multiple-choice'){
-			// use anki-persistence for persistent data between both sides of the card
+			// check if the front contains answers
+			if(front.indexOf('<ul>') === -1){
+				// add back to the front
+				front += back;
+				// copy answers to the back
+				const start = front.indexOf('<ul>');
+				const end = front.indexOf('</ul>');
+				back = front.substring(start, end + 5);
+				// remove ticks on the front
+				front = front.split(' checked="true"').join('');
+				// change ids on the front
+				front = front.split('id="checkbox').join('id="checkboxf');
+				front = front.split('for="checkbox').join('for="checkboxf');
+			}
+			// use anki-persistence for persistent data between both sides of the card and apply multiple choice extension
 			front = `<script>${multipleChoice}</script><script>${persistence}</script>${front}`;
 			front = `<div id="overlay"></div>${front}`;
 		}
