@@ -43,7 +43,7 @@ h2.failed {
 	left: 0;
     height: 100%;
     width: 100%;
-    opacity: 0.05;
+    opacity: 0.1;
     pointer-events: none;
 }
 

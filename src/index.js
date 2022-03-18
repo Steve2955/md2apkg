@@ -172,7 +172,12 @@ export function deckFromCards(cards, images, options) {
 				front += back;
 				// copy answers to the back
 				const start = front.indexOf('<ul>');
-				const end = front.indexOf('</ul>');
+				let end = front.indexOf('</ul>');
+				// for some reason some lists are not closed properly
+				if(end == -1){
+					front += '</ul>';	
+					end = front.indexOf('</ul>');
+				}
 				back = front.substring(start, end + 5);
 				// remove ticks on the front
 				front = front.split(' checked="true"').join('');
